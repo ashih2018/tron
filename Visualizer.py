@@ -20,8 +20,8 @@ class Visualizer:
 
     def __init__(self):
         pygame.init()
-        self.gameDisplay = pygame.display.set_mode((display_width,
-                                                    display_height))
+        self.game_display = pygame.display.set_mode((display_width,
+                                                     display_height))
         pygame.display.set_caption("Tron")
         self.clock = pygame.time.Clock()
 
@@ -60,7 +60,7 @@ class Visualizer:
                     p.set_change(self.user_controls
                                  (pygame.key.get_pressed(), p))
 
-            self.gameDisplay.fill(white)
+            self.game_display.fill(white)
 
             for p in range(len(players)):
                 if players[p].get_is_boost():
@@ -118,7 +118,7 @@ class Visualizer:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            self.gameDisplay.fill(white)
+            self.game_display.fill(white)
             self.display_message("TRON", int(display_width/2),
                                  int(display_height/2), 75)
             self.create_button("BEGIN", int(display_width * 0.25),
@@ -139,7 +139,7 @@ class Visualizer:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            self.gameDisplay.fill(white)
+            self.game_display.fill(white)
             self.display_message(message,
                                  int(display_width/2),
                                  int(display_height/2), 75)
@@ -160,7 +160,7 @@ class Visualizer:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-            self.gameDisplay.fill(white)
+            self.game_display.fill(white)
             self.display_message("Instructions:",
                                  int(display_width / 2),
                                  int(display_height / 9), 20)
@@ -216,7 +216,7 @@ class Visualizer:
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         if x <= mouse[0] <= x + width and y <= mouse[1] <= y + height:
-            pygame.draw.rect(self.gameDisplay, on_color,
+            pygame.draw.rect(self.game_display, on_color,
                              [x, y, width, height])
             if click[0] == 1 and action != None:
                 if action == "Play":
@@ -227,13 +227,13 @@ class Visualizer:
                     pygame.quit()
                     quit()
         else:
-            pygame.draw.rect(self.gameDisplay, off_color,
+            pygame.draw.rect(self.game_display, off_color,
                              [x, y, width, height])
         text_surface = pygame.font.Font("SourceCodePro-Regular.ttf", 20) \
             .render(text, True, black)
         surface, rectangle = text_surface, text_surface.get_rect()
         rectangle.center = (x + width / 2, y + height / 2)
-        self.gameDisplay.blit(surface, rectangle)
+        self.game_display.blit(surface, rectangle)
 
     def user_controls(self, keys_pressed, player) -> tuple:
         """
@@ -268,18 +268,18 @@ class Visualizer:
         :param player: Vehicle object
         :return: None
         """
-        pygame.draw.rect(self.gameDisplay, player.get_color(),
+        pygame.draw.rect(self.game_display, player.get_color(),
                          [player.get_x(), player.get_y(), player.get_width(),
                           player.get_height()])
         trail = player.get_trail()
         trail_locations = trail.get_locations()
         for i in range(1, len(trail_locations)):
-            pygame.draw.line(self.gameDisplay, player.get_color(),
+            pygame.draw.line(self.game_display, player.get_color(),
                              list(trail_locations[i]),
                              list(trail_locations[i]), trail.get_width())
 
     def draw_lines(self) -> None:
-        pygame.draw.line(self.gameDisplay, black, (0, display_height * 0.15),
+        pygame.draw.line(self.game_display, black, (0, display_height * 0.15),
                          (display_width, display_height * 0.15), 2)
 
     def check_boundaries(self, player: Vehicle):
@@ -308,18 +308,18 @@ class Visualizer:
         for p in players:
             boost = p.get_boost()
             for i in range(boost.get_curr()):
-                pygame.draw.circle(self.gameDisplay, p.get_color(),
+                pygame.draw.circle(self.game_display, p.get_color(),
                                    [(int(display_width * 0.05)) + 20 * i,
                                     (int(display_height * 0.05)) + height],
                                    5, 5)
-            pygame.draw.rect(self.gameDisplay, p.get_color(),
+            pygame.draw.rect(self.game_display, p.get_color(),
                              ((int(display_width * 0.05)) + 20 *
                               boost.get_max(),
                               (int(display_height * 0.05)) + height - 5,
                               int(boost.get_charge() * bar_length /
                                   boost.get_max_charge())
                               , 10), 0)
-            pygame.draw.rect(self.gameDisplay, (0, 0, 0),
+            pygame.draw.rect(self.game_display, (0, 0, 0),
                              ((int(display_width * 0.05)) + 20 *
                               boost.get_max(),
                               (int(display_height * 0.05)) + height - 5,
@@ -338,7 +338,7 @@ class Visualizer:
         text = pygame.font.Font('SourceCodePro-Regular.ttf', font_size)
         surf, text_box = self.text_objects(message, text)
         text_box.center = (width, height)
-        self.gameDisplay.blit(surf, text_box)
+        self.game_display.blit(surf, text_box)
 
     def text_objects(self, text, font):
         surface = font.render(text, True, black)
@@ -350,7 +350,7 @@ class Visualizer:
         return power_up
 
     def draw_power_up(self, power_up: PowerUp, color):
-        pygame.draw.rect(self.gameDisplay, color,
+        pygame.draw.rect(self.game_display, color,
                          [power_up.get_x(), power_up.get_y(),
                           power_up.get_width(), power_up.get_height()])
 
